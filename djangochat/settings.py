@@ -47,7 +47,20 @@ ROOT_URLCONF = 'djangochat.urls'
 ASGI_APPLICATION = "djangochat.routing.application"
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "channels.layers.InMemoryChannelLayer"
+        "BACKEND": "channels_redis.djangochat.RedisChannelLayer",
+        'CONFIG': {
+            "hosts": [os.environ.get('REDIS_URL')], #,'redis://localhost:6379'
+        },
+    }
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": [os.environ.get('REDIS_URL')],  # Here we have Redis DSN (for ex. redis://localhost:6379/1) or ,'redis://localhost:6379'
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient"
+        },
     }
 }
 
