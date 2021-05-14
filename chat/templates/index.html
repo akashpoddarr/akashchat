@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+  {% load static %}
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="{% static 'chatroom/style.css' %}">
+    <link rel="stylesheet" href="{% static 'chatroom/style.scss' %}">
+    <link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+    <title>Django-Chat</title>
+    <style>
+     
+#circle {
+	width: 95vw;
+	height: 95vh;
+top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  margin:auto;
+  
+  position:absolute;
+   background: radial-gradient(#0B853D 3px, transparent 5px, #000 7px, transparent 9px, #0B853D 11px, transparent 13px,  15px, transparent 17px, #000 19px, transparent 21px, #0B853D 23px, transparent 25px, #fff 27px, transparent 29px, #000 31px, transparent 33px);
+
+
+  background-size: 30px 30px;
+
+
+	
+	
+	
+}
+.a {
+   -webkit-animation: adjustHue 1s alternate infinite;
+}
+     
+@-webkit-keyframes adjustHue {
+   0% { -webkit-filter: hue-rotate(30deg); }
+   50% { -webkit-filter: hue-rotate(60deg); }
+   100% { -webkit-filter: hue-rotate(90deg); }   
+}
+@-webkit-keyframes loading {
+  to { -webkit-transform: rotate(360deg); }
+}
+@-moz-keyframes loading {
+	to { -moz-transform: rotate(360deg); }
+}
+@-ms-keyframes loading {
+	to { -ms-transform: rotate(360deg); }
+}
+@keyframes loading {
+	to { transform: rotate(360deg); }
+}
+#circle { 
+    -webkit-animation-name: blinker;
+    -webkit-animation-duration: 3s;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-iteration-count: infinite;
+    -moz-animation-name: blinker;
+    -moz-animation-duration: 3s;
+    -moz-animation-timing-function: linear;
+    -moz-animation-iteration-count: infinite;
+    animation-name: blinker;
+    animation-duration: 3s;
+    animation-timing-function: linear; 
+    animation-iteration-count: infinite; color: rgb(0, 0, 0); 
+} 
+
+@-moz-keyframes blinker {
+    0% { opacity: 1.0; }
+    50% { opacity: 0.3; }
+    100% { opacity: 1.0; } 
+}
+
+@-webkit-keyframes blinker { 
+    0% { opacity: 1.0; }
+    50% { opacity: 0.3; }
+    100% { opacity: 1.0; } 
+} 
+
+@keyframes blinker { 
+    0% { opacity: 1.0; } 
+    50% { opacity: 0.3; } 
+    100% { opacity: 1.0; } 
+}
+.a{
+   background: radial-gradient(#0B853D 3px, transparent 5px, #000 7px, transparent 9px, #0B853D 11px, transparent 13px,  15px, transparent 17px, #000 19px, transparent 21px, #0B853D 23px, transparent 25px, #fff 27px, transparent 29px, #000 31px, transparent 33px);
+  background-color:#000;
+  background-size: 32px 32px;
+  overflow:hidden;
+  width:100vw;
+  height:100vh;
+  margin:-10px;
+ 
+}
+body{
+  overflow:hidden;
+  background:#000;
+ transform-style: preserve-3d;
+ 
+  @include perspective(1000px);
+}
+
+
+    </style>
+  </head>
+  <body>
+    <div class="a"></div><div id="circle">
+   
+    
+
+       <!-- alert message code -->
+             {% if messages %}
+            {% for message in messages %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+               {{ message }}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+
+        </div>
+            {% endfor %}
+             {% endif %}
+<!--alert code ends here-->
+{% if user.is_authenticated %}
+<ul class="navbar-nav" style="margin-left: 1050px;">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            welcome {{request.user}}
+             </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="/logout">Logout</a>
+
+          </li>
+      </ul>
+  {% else %}
+  {% endif %}
+<br>
+<br>
+<div class="card text-center" style="margin-left: 200px; margin-top:100px;margin-right: 200px;">
+    <div class="card-header">DJANGO-CHATROOM</div>
+    <div class="card-body">
+        <h5 class="card-title">What chat room would you like to enter?</h5>
+        <input id="room-name-input" type="text" placeholder="Enter any topic" size="100"><br>
+        <br>
+        <input id="room-name-submit" class="btn btn-outline-dark btn-lg" type="button" value="Enter">
+        <script>
+        document.querySelector('#room-name-input').focus();
+        document.querySelector('#room-name-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#room-name-submit').click();
+            }
+        };
+
+        document.querySelector('#room-name-submit').onclick = function(e) {
+            var roomName = document.querySelector('#room-name-input').value;
+            window.location.pathname = '/chat/' + roomName + '/';
+        };
+    </script>
+    </div>
+
+  </div>
+
+<!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+
+    <!-- Option 2: jQuery, Popper.js, and Bootstrap JS
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+    -->
+  </body>
+</html>
